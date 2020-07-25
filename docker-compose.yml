@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  netcore.docker.helloworld:
+    image: ${DOCKER_REGISTRY-}netcoredockerhelloworld
+    build:
+      context: .
+      dockerfile: NetCore.Docker.HelloWorld/Dockerfile
+    ports:
+      - 90:80
+      - 453:443
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    container_name: sqlserver2019
+    ports:
+      - 6000:1433
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: PasswordO1.
+      MSSQL_PID: Express
+    volumes:
+    - ~/docker/sqlserver-data:/var/opt/mssql
